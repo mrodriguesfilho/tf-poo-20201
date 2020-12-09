@@ -1,0 +1,16 @@
+package banco;
+
+import java.util.ArrayList;
+
+public abstract class Banco {
+
+		boolean criarConta(Conta dadosConta);
+		Conta login(Conta dadosLogin);
+		boolean deposito(Conta conta, double valor);
+		boolean saque(Conta conta, double valor);
+		boolean transferir(Conta conta1, Conta conta2, double valor);
+		double saldo(Conta conta);
+		ArrayList<String> extrato(Conta conta);
+		
+}
+

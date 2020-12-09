@@ -1,0 +1,83 @@
+package banco;
+
+import java.sql.*;
+import java.util.ArrayList;
+
+public class Banco implements BancoInterface {
+
+	public static int numeroConta = 1;
+	public static int numeroAgencia = 1;
+	
+    private ConnFactory db = new ConnFactory();
+    private Connection conn;
+
+    long time = System.currentTimeMillis();
+    Timestamp ts = new Timestamp(time);
+
+    protected Banco(){
+        try {
+            this.conn = db.getConnection();
+            this.conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+	
+    
+	public Conta login(Conta dadosLogin) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean deposito(Conta conta, double valor) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean saque(Conta conta, double valor) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean transferir(Conta conta1, Conta conta2, double valor) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public double saldo(Conta conta) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public ArrayList<String> extrato(Conta conta) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean criarConta(Conta dadosConta) {
+		try {
+			
+			if(this.conn.isClosed()) {
+				this.conn = this.db.getConnection();
+			}
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append("INSET INTO contas (numeroagencia, numeroconta, nomecliente, senha, saldo) VALUES (?, ? ,? ,? ,?)");
+			PreparedStatement ps = this.conn.prepareStatement(sql.toString());
+			ps.setInt(1,  numeroAgencia);
+			ps.setInt(2,  numeroConta);
+			ps.setString(3, dadosConta.getCliente().getNome());
+			ps.setString(4, dadosConta.getSenha());
+			ps.setInt(5, 0);
+			ps.executeUpdate();
+			
+			numeroConta++;
+			return true;
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+}

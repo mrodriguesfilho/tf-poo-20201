@@ -1,0 +1,11 @@
+package banco;
+
+public class Conta {
+	private Pessoa cliente;
+	private String senha;
+	private int numeroConta;
+	private int numeroAgencia;
+	private double saldo;
+	
+	
+}
