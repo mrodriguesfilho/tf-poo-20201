@@ -1,0 +1,49 @@
+package banco;
+
+import java.util.ArrayList;
+
+public class Gerente implements Banco {
+	
+	private int matricula;
+	
+	public Gerente() {}
+	
+	public int getMatricula() {
+		return matricula;
+	}
+
+	public void setMatricula(int matricula) {
+		this.matricula = matricula;
+	}
+
+
+	public boolean criarConta(Conta dadosConta) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public Conta login(Conta dadosLogin) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public double transferir(Conta conta1, Conta conta2, double valor) {
+		// TODO Auto-generated method stub
+		return 1.0;
+	}
+
+	public double saldo(Conta conta) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public ArrayList<String> extrato(Conta conta) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public boolean finalizarConta(Conta conta) {
+		return false;
+	}
+
+}
