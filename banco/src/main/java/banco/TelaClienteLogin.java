@@ -49,11 +49,25 @@ public class TelaClienteLogin extends JFrame {
 				ClienteApp clienteApp = new ClienteApp();
 				Conta objConta = new Conta(Integer.parseInt(agencia.getText()), Integer.parseInt(conta.getText()), new String(senha.getPassword()));
 				
-				if (clienteApp.login(objConta)) {
-					new TelaCliente(instancia, objConta);
-				} else {
-					JOptionPane.showMessageDialog(instancia, "Credenciais inválidas", "", JOptionPane.ERROR_MESSAGE);
+				try {
+					
+					if (clienteApp.login(objConta)) {
+						
+						new TelaCliente(instancia, objConta);
+						
+					} else {
+						
+						JOptionPane.showMessageDialog(instancia, "A conta informada é inexistente", "", JOptionPane.ERROR_MESSAGE);
+						
+					}
+					
+				} catch (InvalidCredentialsException exception) {
+					
+					JOptionPane.showMessageDialog(instancia, "As credenciais informadas são inválidas", "", JOptionPane.ERROR_MESSAGE);
+				
 				}
+				
+				
 				
 			}
 			

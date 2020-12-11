@@ -22,8 +22,7 @@ public class ClienteApp implements Banco {
         }
     }
 	
-
-	public boolean criarConta(Cliente dadosCliente) {
+	public boolean criarConta(Cliente dadosCliente)  {
 		try {
 			
 			if(this.conn.isClosed()) {
@@ -49,8 +48,7 @@ public class ClienteApp implements Banco {
 		}
 	}
 
-	
-	public boolean login(Conta dadosLogin) {
+	public boolean login(Conta dadosLogin) throws InvalidCredentialsException {
         
 		try {
             if(this.conn.isClosed()) {
@@ -68,21 +66,20 @@ public class ClienteApp implements Banco {
             ResultSet rs = ps.executeQuery();
 
             System.out.println("\n"+rs+"\n");
-
             if(rs.next()){
                 if(!dadosLogin.getSenha().equals(rs.getString("senha").trim())) {
-                    return false;
-                }else{
+                    throw new InvalidCredentialsException();
+                } else {
                 	return true;
                 }
             }else {
+            	System.out.println("Nenhum registro encontrado!");
             	return false;
             }
             
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            
+        } finally {
         	try {
                 this.conn.close();
             } catch (SQLException e) {
@@ -165,8 +162,6 @@ public class ClienteApp implements Banco {
         }
 	}
 
-
-
 	public double saldo(Conta conta) {
       
 		try {
@@ -192,8 +187,6 @@ public class ClienteApp implements Banco {
             return 0;
         }
 	}
-
-
 
 	public ArrayList<String> extrato(Conta conta) {
         try {
