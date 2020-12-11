@@ -1,11 +1,22 @@
 package banco;
 
-public class Conta{
+public class Conta {
 	
 	private String senha;
 	private int numeroConta;
 	private int numeroAgencia;
 	private double saldo;
+	
+	public Conta(int numeroConta, int numeroAgencia, String senha) {
+		this.numeroConta = numeroConta;
+		this.numeroAgencia = numeroAgencia;
+		this.senha = senha;
+	}
+
+	public Conta(int numeroConta, int numeroAgencia) {
+		this.numeroConta = numeroConta;
+		this.numeroAgencia = numeroAgencia;
+	}
 	
 	public Conta(String senha) {
 		this.senha = senha;
