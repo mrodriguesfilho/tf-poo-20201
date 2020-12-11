@@ -1,0 +1,36 @@
+package banco;
+
+import java.util.ArrayList;
+
+public class GerenteApp implements Banco{
+
+	public boolean criarConta(Cliente dadosCliente) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean login(Conta dadosLogin) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public double transferir(Conta conta1, Conta conta2, double valor) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public double saldo(Conta conta) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public ArrayList<String> extrato(Conta conta) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+	public boolean FinalizarConta() {
+		return false;
+	}
+}

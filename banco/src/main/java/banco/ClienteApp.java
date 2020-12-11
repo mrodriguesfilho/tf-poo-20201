@@ -66,16 +66,22 @@ public class ClienteApp implements Banco {
             ps.setInt(2, dadosLogin.getNumeroConta());
 
             ResultSet rs = ps.executeQuery();
-
+            
+           
+            System.out.println("\n"+dadosLogin.getSenha()+"\n");
             System.out.println("\n"+rs+"\n");
 
             if(rs.next()){
                 if(!dadosLogin.getSenha().equals(rs.getString("senha").trim())) {
-                    return false;
+                    
+                	return false;
                 }else{
+                	
                 	return true;
-                }
-            }else {
+              }
+                
+            }else{
+            	
             	return false;
             }
             

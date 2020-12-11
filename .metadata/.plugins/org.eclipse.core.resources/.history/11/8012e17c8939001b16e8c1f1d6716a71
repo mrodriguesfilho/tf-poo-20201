@@ -1,0 +1,15 @@
+package banco;
+
+public class main {
+	
+	public static void main(String[] args) {
+	
+	Conta conta = new Conta();
+	Pessoa pessoa = new Pessoa('Márcio', "cpf");
+	
+	System.out.println(pessoa.getNome()+pessoa.getCpf());
+	
+	
+		
+	}
+}

@@ -7,9 +7,9 @@ public class Conta {
 	private int numeroAgencia;
 	private double saldo;
 	
-	public Conta(int numeroConta, int numeroAgencia, String senha) {
-		this.numeroConta = numeroConta;
+	public Conta(int numeroAgencia, int numeroConta, String senha) {
 		this.numeroAgencia = numeroAgencia;
+		this.numeroConta = numeroConta;
 		this.senha = senha;
 	}
 

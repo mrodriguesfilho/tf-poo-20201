@@ -1,0 +1,18 @@
+package banco;
+
+public class main {
+	
+	public static void main(String[] args) {
+	
+	Conta conta = new Conta();
+	Pessoa pessoa = new Pessoa("Márcio", "cpf");
+	String senha = "teste123";
+			
+	Conta conta1 = new Conta(pessoa, senha);
+	
+	System.out.println(conta1.getCliente().getNome());
+	
+	
+		
+	}
+}

@@ -1,0 +1,24 @@
+package banco;
+
+import java.util.ArrayList;
+
+public class Gerente extends Pessoa{
+	
+	private int matricula;
+	private int senha;
+	public Gerente(String nome, String cpf, int matricula, int senha) {
+		super(nome, cpf);
+		this.matricula = matricula;
+		this.senha = senha;
+	}
+
+	public int getMatricula() {
+		return matricula;
+	}
+
+	public void setMatricula(int matricula) {
+		this.matricula = matricula;
+	}
+	
+	
+}

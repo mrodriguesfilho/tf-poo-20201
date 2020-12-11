@@ -1,0 +1,110 @@
+package banco;
+
+import java.sql.*;
+import java.util.ArrayList;
+
+public class GerenteApp implements Banco{
+	
+	private static int numeroAgencia = 1;
+	
+    private ConnFactory db = new ConnFactory();
+    private Connection conn;
+
+    long time = System.currentTimeMillis();
+    Timestamp ts = new Timestamp(time);	
+	
+	public boolean criarConta(Cliente dadosCliente) {
+		try {
+			
+			if(this.conn.isClosed()) {
+				this.conn = this.db.getConnection();
+			}
+			
+			StringBuilder sql = new StringBuilder();		
+			sql.append("INSERT INTO contas (numeroagencia, nomecliente, senha, saldo, cpf) VALUES (? ,? ,? ,?, ?)");
+			PreparedStatement ps = this.conn.prepareStatement(sql.toString());
+			ps.setInt(1,  numeroAgencia);
+			ps.setString(2, dadosCliente.getNome());
+			ps.setString(3, dadosCliente.getContaCliente().getSenha());
+			ps.setInt(4, 0);
+			ps.setString(5, dadosCliente.getCpf());
+			ps.executeUpdate();
+			
+			
+			return true;
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean login(Gerente dadosGerente) {
+		
+		try {
+            if(this.conn.isClosed()) {
+                this.conn = this.db.getConnection();
+            }
+
+            StringBuilder sql = new StringBuilder();
+            sql.append("SELECT senha FROM gerentes WHERE matricula=?");
+
+            PreparedStatement ps = this.conn.prepareStatement(sql.toString());
+
+            ps.setInt(1, dadosGerente.getMatricula());
+ 
+            ResultSet rs = ps.executeQuery();
+            
+           
+            System.out.println("\n"+dadosGerente.getSenha()+"\n");
+            System.out.println("\n"+rs+"\n");
+
+            if(rs.next()){
+                if(!dadosLogin.getSenha().equals(rs.getString("senha").trim())) {
+                    
+                	return false;
+                }else{
+                	
+                	return true;
+              }
+                
+            }else{
+            	
+            	return false;
+            }
+            
+        }catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            
+        	try {
+                this.conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        	
+        }
+		
+		return false;
+	}
+
+	public double transferir(Conta conta1, Conta conta2, double valor) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public double saldo(Conta conta) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public ArrayList<String> extrato(Conta conta) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+	public boolean FinalizarConta() {
+		return false;
+	}
+}
