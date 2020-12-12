@@ -3,6 +3,8 @@ package banco;
 import java.sql.*;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 public class ClienteApp implements Banco {
 
 	public static int numeroAgencia = 1;
@@ -64,7 +66,9 @@ public class ClienteApp implements Banco {
             ps.setInt(2, dadosLogin.getNumeroConta());
 
             ResultSet rs = ps.executeQuery();
-
+            
+           
+            System.out.println("\n"+dadosLogin.getSenha()+"\n");
             System.out.println("\n"+rs+"\n");
             if(rs.next()){
                 if(!dadosLogin.getSenha().equals(rs.getString("senha").trim())) {
@@ -100,12 +104,13 @@ public class ClienteApp implements Banco {
             StringBuilder sql = new StringBuilder();
             sql.append("SELECT saldo FROM contas WHERE numeroagencia=? AND numeroconta=?");
             PreparedStatement ps = this.conn.prepareStatement(sql.toString());
-            ps.setInt(1, conta2.getNumeroAgencia());
-            ps.setInt(2, conta2.getNumeroConta());
+            ps.setInt(1, conta1.getNumeroAgencia());
+            ps.setInt(2, conta1.getNumeroConta());
             ResultSet rs = ps.executeQuery();
 
             if(rs.next()){
 
+            	System.out.println("Saldo disp.: R$" + rs.getDouble("saldo"));
                 if( rs.getDouble("saldo") >= valor ){
                     sql.setLength(0);
                     ps.clearParameters();
@@ -134,6 +139,7 @@ public class ClienteApp implements Banco {
                     ps.setDouble(1, valor);
                     ps.setInt(2, conta1.getNumeroAgencia());
                     ps.setInt(3, conta1.getNumeroConta());
+                    ps.executeUpdate();
 
                     sql.setLength(0);
                     ps.clearParameters();
@@ -188,6 +194,79 @@ public class ClienteApp implements Banco {
         }
 	}
 
+	public boolean deposito(Conta conta, double valor) {
+		try {
+			if (this.conn.isClosed()) {
+                this.conn = this.db.getConnection();
+            }
+			
+			StringBuilder sql = new StringBuilder();
+            sql.append("UPDATE contas SET saldo=saldo+? WHERE numeroagencia=? AND numeroconta=?");
+            PreparedStatement ps = this.conn.prepareStatement(sql.toString());
+            ps.setDouble(1, valor);
+            ps.setInt(2, conta.getNumeroAgencia());
+            ps.setInt(3, conta.getNumeroConta());
+            
+            if (ps.executeUpdate() > 0) {
+            	sql.setLength(0);
+                ps.clearParameters();
+                sql.append("INSERT INTO historico (numeroagencia, numeroconta, data, valor, operacao) VALUES (?,?,?,?,?)");
+                ps = this.conn.prepareStatement(sql.toString());
+                ps.setInt(1, conta.getNumeroAgencia());
+                ps.setInt(2, conta.getNumeroConta());
+                ps.setTimestamp(3, ts);
+                ps.setDouble(4, valor);
+                ps.setString(5, "DEPOSITOU");
+                ps.executeUpdate();
+                
+                return true;
+            } else {
+            	return false;
+            }
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return false;
+	}
+	
+	public boolean sacar(Conta conta, double valor) {
+		try {
+			
+			if (this.conn.isClosed()) {
+                this.conn = this.db.getConnection();
+            }
+			
+			StringBuilder sql = new StringBuilder();
+            sql.append("UPDATE contas SET saldo=saldo-? WHERE numeroagencia=? AND numeroconta=?");
+            PreparedStatement ps = this.conn.prepareStatement(sql.toString());
+            ps.setDouble(1, valor);
+            ps.setInt(2, conta.getNumeroAgencia());
+            ps.setInt(3, conta.getNumeroConta());
+            
+            if (ps.executeUpdate() > 0) {
+            	sql.setLength(0);
+                ps.clearParameters();
+                sql.append("INSERT INTO historico (numeroagencia, numeroconta, data, valor, operacao) VALUES (?,?,?,?,?)");
+                ps = this.conn.prepareStatement(sql.toString());
+                ps.setInt(1, conta.getNumeroAgencia());
+                ps.setInt(2, conta.getNumeroConta());
+                ps.setTimestamp(3, ts);
+                ps.setDouble(4, valor);
+                ps.setString(5, "SACOU");
+                ps.executeUpdate();
+                
+                return true;
+            } else {
+            	return false;
+            }
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return false;
+	}
+	
 	public ArrayList<String> extrato(Conta conta) {
         try {
 
@@ -198,7 +277,7 @@ public class ClienteApp implements Banco {
             ArrayList<String> extrato = new ArrayList<String>();
 
             StringBuilder sql = new StringBuilder();
-            sql.append("SELECT data, operacao, valor FROM historico WHERE numeroagencia=? AND numeroconta=? ORDER BY data DESC");
+            sql.append("SELECT data, operacao, valor FROM historico WHERE numeroagencia=? AND numeroconta=? ORDER BY data ASC");
             PreparedStatement ps = this.conn.prepareStatement(sql.toString());
             ps.setInt(1, conta.getNumeroAgencia());
             ps.setInt(2, conta.getNumeroConta());
@@ -206,7 +285,10 @@ public class ClienteApp implements Banco {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                extrato.add("Data: "+rs.getTimestamp("data")+" / OPERAÇÃO: "+rs.getString("operacao")+" / Valor: "+rs.getDouble("valor"));
+            	Timestamp  ts = rs.getTimestamp("data");
+            	String[] data = ts.toString().split(" ")[0].split("-");
+            	
+                extrato.add("" + data[2] + "/" + data[1] + "/" + data[0] + " || " + rs.getString("operacao") + " R$ " + rs.getDouble("valor"));
             }
 
             return extrato;
