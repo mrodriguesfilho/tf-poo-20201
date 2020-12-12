@@ -52,7 +52,9 @@ public class TelaCriarConta extends JFrame {
 				Cliente cliente = new Cliente(nome.getText(), cpf.getText(), conta);
 				
 				if (clienteApp.criarConta(cliente)) {
-					JOptionPane.showMessageDialog(instancia, "Conta criada com sucesso.\nRedirecionando para a tela de cliente...", "", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(instancia, "Conta criada com sucesso.", "", JOptionPane.INFORMATION_MESSAGE);
+					parent.setVisible(true);
+					instancia.dispose();
 				} else {
 					JOptionPane.showMessageDialog(instancia, "A conta não foi criada. Tente novamente.", "", JOptionPane.ERROR_MESSAGE);
 				}

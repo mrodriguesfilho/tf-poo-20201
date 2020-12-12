@@ -48,28 +48,50 @@ public class TelaCliente extends JFrame {
 		
 		btnSacar.addActionListener(new ActionListener() {
 			
-			public void actionPerformed(ActionEvent e) {
-				
-			}
+				public void actionPerformed(ActionEvent e) {
+					try {
+						double valor = Double.parseDouble(JOptionPane.showInputDialog(instancia, "Quanto deseja sacar?", ""));
+						if (clienteApp.sacar(conta, valor))
+							JOptionPane.showMessageDialog(instancia, "Saque realizado com sucesso", "Saque", JOptionPane.INFORMATION_MESSAGE);
+						else
+							JOptionPane.showMessageDialog(instancia, "Saldo insuficiente", "Saque", JOptionPane.ERROR_MESSAGE);
+					} catch (Exception exc) {
+						JOptionPane.showMessageDialog(instancia, "Insira um valor válido.\nUse um ponto para separar a parte decimal.;", "Saque", JOptionPane.ERROR_MESSAGE);
+					}
+					
+				}
 			
-		});
+			}
+		);
 		
 		btnDepositar.addActionListener(new ActionListener() {
 					
 					public void actionPerformed(ActionEvent e) {
 						
+						try {
+							double valor = Double.parseDouble(JOptionPane.showInputDialog(instancia, "Quanto deseja depositar?", ""));
+							if (clienteApp.deposito(conta, valor)) {
+								JOptionPane.showMessageDialog(instancia, "Depositado com sucesso", "", JOptionPane.INFORMATION_MESSAGE);
+							} else {
+								JOptionPane.showMessageDialog(instancia, "Houve um erro!\nTente novamente", "", JOptionPane.ERROR_MESSAGE);
+							}
+						} catch (Exception exc) {
+							JOptionPane.showMessageDialog(instancia, "Insira um valor válido.\nUse um ponto para separar a parte decimal.;", "Saque", JOptionPane.ERROR_MESSAGE);
+						}
+
 					}
 					
-				});
+				}
+		);
 
 		btnTransferir.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				double quantidade = Double.parseDouble(JOptionPane.showInputDialog(instancia, "Quanto deseja transferir?", ""));
+				double valor = Double.parseDouble(JOptionPane.showInputDialog(instancia, "Quanto deseja transferir?", ""));
 				int agenciaDestino = Integer.parseInt(JOptionPane.showInputDialog(instancia, "Qual a agência de destino?", ""));
 				int contaDestino = Integer.parseInt(JOptionPane.showInputDialog(instancia, "Qual a conta de destino?", ""));
 				
-				if (clienteApp.transferir(conta, new Conta(agenciaDestino, contaDestino), quantidade) == 1) {
+				if (clienteApp.transferir(conta, new Conta(contaDestino, agenciaDestino), valor) == 1) {
 					JOptionPane.showMessageDialog(instancia, "Transferência realizada com sucesso", "Transferência", JOptionPane.INFORMATION_MESSAGE);
 				} else {
 					JOptionPane.showMessageDialog(instancia, "Saldo insuficiente", "Transferência", JOptionPane.ERROR_MESSAGE);
@@ -81,7 +103,15 @@ public class TelaCliente extends JFrame {
 		btnExtrato.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				
+				// Mostra somente as 10 últimas operações
+				String extrato = "";
+				int c = 0;
+				for (String registro : clienteApp.extrato(conta)) {
+					extrato += registro + "\n\n";
+					c += 1;
+					if (c == 10) break;
+				}
+				JOptionPane.showMessageDialog(instancia, extrato, "Extrato das últimas operações", JOptionPane.INFORMATION_MESSAGE);
 			}
 			
 		});
