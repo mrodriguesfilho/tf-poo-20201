@@ -236,7 +236,8 @@ public class GerenteApp implements Banco{
             		sql.setLength(0);
             		ps.clearParameters();
             		sql.append("DELETE FROM contas WHERE numeroagencia=? AND numeroconta=?");
-        			ps.setInt(1, numeroAgencia);
+        			ps = this.conn.prepareStatement(sql.toString());
+            		ps.setInt(1, numeroAgencia);
         			ps.setInt(2, conta.getNumeroConta());
         			ps.executeUpdate();
         			return 1;

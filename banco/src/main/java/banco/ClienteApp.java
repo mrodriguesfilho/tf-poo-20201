@@ -298,5 +298,44 @@ public class ClienteApp implements Banco {
             return null;
         }
 	}
+	
+    public boolean saque(Conta conta, double valor){
+        try {
+            if (this.conn.isClosed()) {
+                this.conn = this.db.getConnection();
+            }
+
+            StringBuilder sql = new StringBuilder();
+
+            if( conta.getSaldo() >= valor ){
+                sql.append("UPDATE contas SET saldo=saldo-? WHERE numeroagencia=? AND numeroconta=?");
+                PreparedStatement ps = this.conn.prepareStatement(sql.toString());
+                ps.setDouble(1, valor);
+                ps.setInt(2, conta.getNumeroAgencia());
+                ps.setInt(3, conta.getNumeroConta());
+                ps.executeUpdate();
+
+                sql.setLength(0);
+                ps.clearParameters();
+                sql.append("INSERT INTO historico (numeroagencia, numeroconta, data, valor, operacao) VALUES (?,?,?,?,?)");
+                ps = this.conn.prepareStatement(sql.toString());
+                ps.setInt(1, conta.getNumeroAgencia());
+                ps.setInt(2, conta.getNumeroConta());
+                ps.setTimestamp(3, ts);
+                ps.setDouble(4, valor);
+                ps.setString(5, "SAQUE");
+                ps.executeUpdate();
+
+                return true;
+            }else{
+                return false;
+            }
+
+        }catch(Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }	
 
 }

@@ -48,7 +48,7 @@ public class TelaGerente extends JFrame {
 				if (resultado == 1) {
 					JOptionPane.showMessageDialog(instancia, "A conta foi finalizada", "Finalização de conta", JOptionPane.INFORMATION_MESSAGE);
 				} else if (resultado == -1) {
-					JOptionPane.showMessageDialog(instancia, "A conta ainda possui um saldo maior que zero", "Não foi possível finalizar a conta", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(instancia, "Para finalizar a conta, primeiro é necessário que ela não tenha mais saldo!", "Não foi possível finalizar a conta", JOptionPane.WARNING_MESSAGE);
 				} else {
 					JOptionPane.showMessageDialog(instancia, "Houve um erro!\nTente novamente", "Não foi possível finalizar a conta", JOptionPane.ERROR_MESSAGE);
 				}
