@@ -1,7 +1,9 @@
 # tf-poo-20201
 
 
-Projeto Final - Programação Orientada ao Objeto - 2020/1 
+Projeto Final - Programação Orientada ao Objeto - 2020/1
+
+Link para o vídeo da apresentação do projeto: https://www.youtube.com/watch?v=YizQcTeiXrc
 
 Alunos: 
 
